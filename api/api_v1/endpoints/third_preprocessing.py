@@ -36,19 +36,16 @@ async def second_preprocess():
                 "senior": 0, 
                 "elderly": 0
             }
-            
-            print(cell, flush=True)
 
             #6. 2단계 가명 처리 
             for person in cell['people']:
                 
-                #print(person, flush=True)
-                
-                # 7. IMSI 정보 지우기, 전화번호 지우기
+                # 7. IMSI 정보 지우기, 전화번호 지우기, 성별 지우기
                 del person['mobile_number']
                 del person['IMSI']
+                del person['gender']
                 
-                # 8. 나이 가명 처리 
+                # 8. 나이 가명 처리
                 if person['age'] > 20 and person['age'] <30 :
                     person['age'] = 'mid_20s'
                     age[0]+=1
@@ -56,10 +53,22 @@ async def second_preprocess():
                 elif person['age'] > 30 and person['age'] < 40 :
                     person['age'] = 'mid_30s'
                     age[0]+=1
-                
-                elif person['age'] > 40:
-                    person['age'] = 'mid_40s'   
+
+                elif person['age'] > 40 and person['age'] < 50 :
+                    person['age'] = 'mid_40s'
                     age[1]+=1
+
+                elif person['age'] > 50 and person['age'] < 60 :
+                    person['age'] = 'mid_50s'
+                    age[2]+=1
+
+                elif person['age'] > 60 and person['age'] < 70 :
+                    person['age'] = 'mid_60s'
+                    age[3]+=1
+                
+                elif person['age'] > 70:
+                    person['age'] = 'mid_70s'
+                    age[4]+=1
                 
             # 9. 나이 분포 업데이트
             cell['age_distribution']['youth'] = age[0]
